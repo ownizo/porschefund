@@ -12,7 +12,7 @@ Humorous crowdfunding page for a regular Portuguese guy trying to buy a Porsche 
 ## Backoffice password
 Set it in Netlify: Site configuration → Environment variables → add `ADMIN_PASSWORD` (scope: Functions), then redeploy (Deploys → Trigger deploy). To change it later, edit the variable and redeploy.
 
-If the goal is not reached by the deadline, funds go to a charity of the organizer’s choice.
+If the goal is not reached by the deadline, funds go to the Liga Portuguesa Contra o Cancro. Anything above €100,000 goes there too.
 
 
 ## Background image

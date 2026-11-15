@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070709">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
     <title>Porsche Fund – Help a Regular Portuguese Guy Buy His Dream Taycan</title>
@@ -39,7 +40,11 @@
         }
         #stage {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100vh;
+            height: 100lvh; /* stays put when the mobile address bar slides in and out */
             z-index: 0;
             pointer-events: none;
             background: #070709 url("/img/taycan-desktop-v2.webp") center / cover no-repeat;
@@ -165,7 +170,21 @@
             padding: 2rem 1rem 5rem;
         }
         @media (max-width: 720px) {
-            .panel, .panel.right { justify-content: center; min-height: 100vh; padding: 18vh 1rem; }
+            .panel, .panel.right { justify-content: center; min-height: 0; padding: 20vh 1rem; }
+            .panel:first-child { min-height: 100svh; padding: 12vh 1.25rem 45vh; align-items: flex-start; }
+            .card {
+                padding: 1.4rem 1.2rem 1.2rem;
+                border-radius: 22px;
+                background: rgba(8, 8, 12, 0.72);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            h2 { font-size: 1.5rem; }
+            .subtitle { font-size: 1.05rem; }
+            .portrait { width: 120px; height: 120px; }
+            .paypal-row .cta { flex: 1 1 calc(50% - 0.65rem); text-align: center; margin: 0; padding: 0.85rem 0.5rem; white-space: nowrap; }
+            .all-notes a { display: inline-block; padding: 0.6rem 0; }
+            footer.fine { font-size: 0.85rem; background: rgba(7, 7, 9, 0.9); padding-bottom: calc(3rem + env(safe-area-inset-bottom)); }
         }
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -185,7 +204,7 @@
         <section class="panel right">
             <article class="card">
                 <h2>The (Not So) Epic Story</h2>
-                <img class="portrait" src="me.jpg" alt="The ordinary Portuguese guy behind this fund">
+                <img class="portrait" src="me.jpg" alt="The ordinary Portuguese guy behind this fund" width="148" height="148" loading="lazy" decoding="async">
                 <p>Hi. I’m a completely ordinary Portuguese guy. 41 years old. House, wife, a 3-year-old boy and an 8-month-old girl. My business is the kind that barely covers the bills on a good month. Nothing historically relevant has ever happened in my life. No viral moments, no lottery wins, no sudden fame.</p>
                 <p>What I do have is a childhood dream that never left: owning a Porsche. Not a museum piece. Not a race car. Just a proper Porsche that I can drive with my kids in the back and smile like an idiot every time I get behind the wheel.</p>
                 <p>Specifically, I want a <span class="highlight">Porsche Taycan</span> — the electric one. Quiet, fast, and somehow still unmistakably Porsche. My birthday is <strong>August 2, 2027</strong>. That’s the deadline. If enough people throw in the price of a coffee, I might actually make it.</p>
@@ -242,7 +261,7 @@
                     <li><a href="/blog/718-electric">The petrol 718 is gone. The electric one is still a rumour with headlights<small>5 November 2026</small></a></li>
                     <li><a href="/blog/porsche-future">Porsche is planning a car above the 911 and I am still planning Tuesday<small>7 October 2026</small></a></li>
                 </ul>
-                <p style="margin-top:1rem;"><a href="/blog/">All notes</a></p>
+                <p class="all-notes" style="margin-top:1rem;"><a href="/blog/">All notes</a></p>
                 <p style="margin-top:1rem;"><a class="cta" href="#donate">Send 1 unit of currency</a></p>
             </article>
         </section>

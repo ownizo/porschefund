@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,60 +9,201 @@
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
     <title>Porsche Fund · Backoffice</title>
     <style>
+        :root {
+            --bg: #070709; --surface: #111115; --surface-2: #17171c; --line: #26262d;
+            --ink: #f1f1f3; --ink-2: #b4b4bc; --ink-3: #85858f;
+            --gold: #c9a227; --red: #d5001c; --bar: #c9a227; --bar-hover: #e2bd45;
+        }
         * { box-sizing: border-box; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: #070709; color: #eee; margin: 0; padding: 2rem 1.2rem; }
-        main { max-width: 440px; margin: 0 auto; }
-        h1 { color: #c9a227; font-size: 1.6rem; margin: 0 0 0.3rem; }
-        .sub { color: #999; margin: 0 0 1.6rem; font-size: 0.95rem; }
-        label { display: block; font-size: 0.9rem; color: #bbb; margin: 1rem 0 0.35rem; }
-        input { width: 100%; padding: 0.85rem; font-size: 1.1rem; border-radius: 10px; border: 1px solid #333; background: #141418; color: #fff; }
-        input:focus { outline: 2px solid #c9a227; border-color: transparent; }
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-        button { width: 100%; margin-top: 1.4rem; padding: 0.95rem; font-size: 1.05rem; font-weight: 700; border: 0; border-radius: 999px; background: #d5001c; color: #fff; cursor: pointer; }
-        button:disabled { opacity: 0.6; cursor: wait; }
+        body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--ink); margin: 0; padding: 1.5rem 1rem 3rem; }
+        main { max-width: 1100px; margin: 0 auto; }
+        h1 { color: var(--gold); font-size: 1.5rem; margin: 0 0 0.2rem; }
+        h2 { font-size: 1.05rem; margin: 0 0 0.8rem; color: var(--ink); }
+        .sub { color: var(--ink-3); margin: 0 0 1.4rem; font-size: 0.95rem; }
+        label { display: block; font-size: 0.9rem; color: var(--ink-2); margin: 1rem 0 0.35rem; }
+        input[type=password], input[type=number] { width: 100%; padding: 0.8rem; font-size: 1.05rem; border-radius: 10px; border: 1px solid #333; background: var(--surface-2); color: #fff; }
+        input:focus { outline: 2px solid var(--gold); border-color: transparent; }
+        .narrow { max-width: 440px; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .btn { width: 100%; margin-top: 1.3rem; padding: 0.9rem; font-size: 1.05rem; font-weight: 700; border: 0; border-radius: 999px; background: var(--red); color: #fff; cursor: pointer; }
+        .btn:disabled { opacity: 0.6; cursor: wait; }
         .msg { margin-top: 1rem; min-height: 1.4em; font-size: 0.95rem; }
-        .ok { color: #3fd48b; }
-        .err { color: #ff6b6b; }
-        .now { background: #141418; border: 1px solid #26262c; border-radius: 12px; padding: 1rem; margin-bottom: 0.5rem; }
-        .now strong { font-size: 1.8rem; color: #c9a227; display: block; }
-        .now span { color: #999; font-size: 0.85rem; }
-        .remember { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.8rem; font-size: 0.9rem; color: #bbb; }
-        .remember input { width: auto; }
-        a { color: #c9a227; }
-        .hidden { display: none; }
+        .ok { color: #3fd48b; } .err { color: #ff6b6b; }
+        .now { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 0.5rem; }
+        .now strong { font-size: 1.8rem; color: var(--gold); display: block; }
+        .now span { color: var(--ink-3); font-size: 0.85rem; }
+        .check { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.8rem; font-size: 0.9rem; color: var(--ink-2); }
+        a { color: var(--gold); }
+        .hidden { display: none !important; }
+
+        .tabs { display: flex; gap: 0.4rem; margin: 0 0 1.2rem; border-bottom: 1px solid var(--line); }
+        .tab { background: none; border: 0; color: var(--ink-3); font-size: 1rem; font-weight: 600; padding: 0.7rem 0.9rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+        .tab[aria-selected=true] { color: var(--ink); border-bottom-color: var(--gold); }
+        .toplinks { margin-left: auto; align-self: center; font-size: 0.85rem; }
+
+        .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; }
+        .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; flex-wrap: wrap; }
+        .seg button { background: none; border: 0; color: var(--ink-2); padding: 0.45rem 0.8rem; border-radius: 999px; font-size: 0.88rem; cursor: pointer; }
+        .seg button[aria-pressed=true] { background: var(--surface-2); color: var(--ink); box-shadow: inset 0 0 0 1px #3a3a44; }
+        .updated { color: var(--ink-3); font-size: 0.8rem; margin-left: auto; }
+
+        .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.7rem; margin-bottom: 1rem; }
+        .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem 1rem; }
+        .kpi .v { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .kpi .l { color: var(--ink-3); font-size: 0.8rem; margin-top: 0.15rem; }
+
+        .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; margin-bottom: 1rem; }
+        .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+        .grid2 .panel { margin-bottom: 0; }
+        .hint { color: var(--ink-3); font-size: 0.82rem; margin: 0.6rem 0 0; line-height: 1.45; }
+
+        .quality { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+        .q { background: var(--surface-2); border-radius: 10px; padding: 0.7rem 0.8rem; }
+        .q .v { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .q .l { font-size: 0.8rem; color: var(--ink-2); }
+        .q .s { font-size: 0.75rem; color: var(--ink-3); }
+
+        .chart { position: relative; height: 220px; }
+        .chart svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .chart .gridline { stroke: #24242b; stroke-width: 1; }
+        .chart .axis { fill: var(--ink-3); font-size: 11px; }
+        .chart .bar { fill: var(--bar); }
+        .chart .hit { fill: transparent; cursor: default; }
+        .chart .hit:hover + .bar, .chart g:hover .bar { fill: var(--bar-hover); }
+        .tip { position: absolute; pointer-events: none; background: #1e1e24; border: 1px solid #34343d; color: var(--ink); font-size: 0.8rem; padding: 0.45rem 0.6rem; border-radius: 8px; white-space: nowrap; transform: translate(-50%, -110%); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+        .tip b { display: block; color: var(--ink-2); font-weight: 600; margin-bottom: 0.1rem; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th { text-align: left; color: var(--ink-3); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0 0.4rem 0.45rem; }
+        td { padding: 0.45rem 0.4rem; border-top: 1px solid #1f1f25; vertical-align: top; }
+        td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .name { word-break: break-word; }
+        .meter { height: 4px; background: #24242b; border-radius: 2px; margin-top: 0.3rem; overflow: hidden; }
+        .meter i { display: block; height: 100%; background: var(--bar); border-radius: 0 2px 2px 0; }
+        .empty { color: var(--ink-3); font-size: 0.9rem; padding: 0.6rem 0; }
+
+        .visit { border-top: 1px solid #1f1f25; padding: 0.7rem 0; }
+        .visit:first-child { border-top: 0; }
+        .visit .head { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: baseline; font-size: 0.88rem; }
+        .visit .when { font-weight: 600; }
+        .visit .meta { color: var(--ink-2); }
+        .visit ol { margin: 0.4rem 0 0; padding-left: 1.2rem; color: var(--ink-2); font-size: 0.85rem; }
+        .visit ol li span { color: var(--ink-3); }
+        .badge { font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 999px; border: 1px solid #3a3a44; color: var(--ink-2); }
+        .badge.human::before { content: "● "; color: #3fd48b; }
+        .badge.bot::before { content: "▲ "; color: #ff9f43; }
+        .badge.datacenter::before { content: "■ "; color: #8fa5ff; }
+        .loading { opacity: 0.55; transition: opacity 0.2s; }
+        @media (max-width: 600px) {
+            .quality { grid-template-columns: 1fr; }
+            .kpi .v { font-size: 1.35rem; }
+            .updated { margin-left: 0; width: 100%; }
+        }
     </style>
 </head>
 <body>
 <main>
-    <h1>Fund backoffice</h1>
-    <p class="sub">Update the total everyone sees on porschefund.com.</p>
+    <h1>Backoffice</h1>
+    <p class="sub">porschefund.com</p>
 
-    <form id="login">
-        <label for="pass">Password</label>
+    <form id="login" class="narrow">
+        <label for="pass">Palavra-passe</label>
         <input type="password" id="pass" autocomplete="current-password" required>
-        <label class="remember"><input type="checkbox" id="remember" checked> Remember on this device</label>
-        <button type="submit">Log in</button>
+        <label class="check"><input type="checkbox" id="remember" checked> Lembrar neste dispositivo</label>
+        <button class="btn" type="submit">Entrar</button>
         <p class="msg" id="loginMsg"></p>
     </form>
 
-    <form id="edit" class="hidden">
-        <div class="now"><strong id="nowEur">€0.00</strong><span id="nowInfo">Loading…</span></div>
-
-        <label for="eur">Total in euros (€) — this fills the progress bar</label>
-        <input type="number" id="eur" inputmode="decimal" step="0.01" min="0" required>
-
-        <div class="row">
-            <div><label for="usd">Dollars ($)</label><input type="number" id="usd" inputmode="decimal" step="0.01" min="0"></div>
-            <div><label for="gbp">Pounds (£)</label><input type="number" id="gbp" inputmode="decimal" step="0.01" min="0"></div>
+    <div id="app" class="hidden">
+        <div class="tabs" role="tablist">
+            <button class="tab" role="tab" id="tabVisits" aria-selected="true" aria-controls="visits">Visitas</button>
+            <button class="tab" role="tab" id="tabFund" aria-selected="false" aria-controls="fund">Contador</button>
+            <span class="toplinks"><a href="/" target="_blank" rel="noopener">Ver site</a> · <a href="#" id="logout">Sair</a></span>
         </div>
 
-        <label for="count">Number of espressos (donations), optional</label>
-        <input type="number" id="count" inputmode="numeric" step="1" min="0">
+        <!-- VISITS -->
+        <section id="visits" role="tabpanel">
+            <div class="controls">
+                <div class="seg" id="range">
+                    <button data-r="today" aria-pressed="true">Hoje</button>
+                    <button data-r="yesterday" aria-pressed="false">Ontem</button>
+                    <button data-r="7" aria-pressed="false">7 dias</button>
+                    <button data-r="30" aria-pressed="false">30 dias</button>
+                    <button data-r="90" aria-pressed="false">90 dias</button>
+                </div>
+                <div class="seg" id="traffic">
+                    <button data-t="human" aria-pressed="true">Só pessoas</button>
+                    <button data-t="all" aria-pressed="false">Tudo</button>
+                </div>
+                <span class="updated" id="updated"></span>
+            </div>
 
-        <button type="submit" id="save">Save and publish</button>
-        <p class="msg" id="editMsg"></p>
-        <p style="margin-top:1.5rem;font-size:0.9rem;"><a href="/" target="_blank" rel="noopener">Open the homepage</a> · <a href="#" id="logout">Log out</a></p>
-    </form>
+            <div id="dash">
+                <div class="kpis">
+                    <div class="kpi"><div class="v" id="kVisitors">–</div><div class="l">Visitantes</div></div>
+                    <div class="kpi"><div class="v" id="kSessions">–</div><div class="l">Visitas</div></div>
+                    <div class="kpi"><div class="v" id="kViews">–</div><div class="l">Páginas vistas</div></div>
+                    <div class="kpi"><div class="v" id="kSession">–</div><div class="l">Tempo médio por visita</div></div>
+                    <div class="kpi"><div class="v" id="kPage">–</div><div class="l">Tempo médio por página</div></div>
+                    <div class="kpi"><div class="v" id="kBounce">–</div><div class="l">Saíram após 1 página</div></div>
+                </div>
+
+                <div class="panel">
+                    <h2>Origem do tráfego</h2>
+                    <div class="quality">
+                        <div class="q"><div class="l">● Pessoas (orgânico)</div><div class="v" id="qHuman">–</div><div class="s" id="qHumanV"></div></div>
+                        <div class="q"><div class="l">■ Data centers / VPN</div><div class="v" id="qDc">–</div><div class="s" id="qDcV"></div></div>
+                        <div class="q"><div class="l">▲ Robots declarados</div><div class="v" id="qBot">–</div><div class="s" id="qBotV"></div></div>
+                    </div>
+                    <p class="hint">“Pessoas” são visitas de redes residenciais e móveis. “Data centers / VPN” vêm de servidores (AWS, Google Cloud, OVH, etc.) ou de VPNs: muitas vezes são robots, mas podem ser pessoas a usar VPN. “Robots” identificam-se como tal (Google, ferramentas de teste, pré-visualizações de links). Robots que não correm JavaScript não aparecem aqui.</p>
+                </div>
+
+                <div class="panel">
+                    <h2 id="chartTitle">Visitantes</h2>
+                    <div class="chart" id="chart"></div>
+                </div>
+
+                <div class="panel">
+                    <h2>Páginas</h2>
+                    <div id="pages"></div>
+                </div>
+
+                <div class="grid2">
+                    <div class="panel"><h2>De onde vêm</h2><div id="sources"></div><p class="hint">Site anterior (referrer) ou etiqueta utm_source. “Direto” inclui links escritos à mão, favoritos e muitas apps.</p></div>
+                    <div class="panel"><h2>Países</h2><div id="countries"></div></div>
+                    <div class="panel"><h2>Cidades</h2><div id="cities"></div></div>
+                    <div class="panel"><h2>Dispositivos</h2><div id="devices"></div></div>
+                    <div class="panel"><h2>Browsers</h2><div id="browsers"></div></div>
+                    <div class="panel"><h2>Sistemas</h2><div id="systems"></div></div>
+                </div>
+
+                <div class="panel" style="margin-top:1rem;">
+                    <h2>Últimas visitas</h2>
+                    <div id="recent"></div>
+                </div>
+
+                <label class="check"><input type="checkbox" id="notrack"> Não contar as minhas visitas neste dispositivo</label>
+                <p class="hint">Sem cookies e sem guardar IPs: cada visitante é identificado por um código anónimo que muda todos os dias. Horas em hora de Lisboa. O tempo conta só enquanto a página está visível.</p>
+            </div>
+        </section>
+
+        <!-- FUND -->
+        <section id="fund" role="tabpanel" class="hidden">
+            <form id="edit" class="narrow">
+                <div class="now"><strong id="nowEur">€0.00</strong><span id="nowInfo">A carregar…</span></div>
+                <label for="eur">Total em euros (€) — é este que enche a barra</label>
+                <input type="number" id="eur" inputmode="decimal" step="0.01" min="0" required>
+                <div class="row2">
+                    <div><label for="usd">Dólares ($)</label><input type="number" id="usd" inputmode="decimal" step="0.01" min="0"></div>
+                    <div><label for="gbp">Libras (£)</label><input type="number" id="gbp" inputmode="decimal" step="0.01" min="0"></div>
+                </div>
+                <label for="count">Número de cafés (donativos), opcional</label>
+                <input type="number" id="count" inputmode="numeric" step="1" min="0">
+                <button class="btn" type="submit" id="save">Gravar e publicar</button>
+                <p class="msg" id="editMsg"></p>
+            </form>
+        </section>
+    </div>
 </main>
 <script>
     const $ = (id) => document.getElementById(id);
@@ -70,92 +211,251 @@
     let password = "";
     try { password = localStorage.getItem(KEY) || sessionStorage.getItem(KEY) || ""; } catch (e) {}
 
-    const fmt = (n, c) => new Intl.NumberFormat("en-GB", { style: "currency", currency: c }).format(n || 0);
+    const money = (n, c) => new Intl.NumberFormat("pt-PT", { style: "currency", currency: c }).format(n || 0);
+    const num = (n) => (n ?? 0).toLocaleString("pt-PT");
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const dur = (ms) => {
+        if (ms === null || ms === undefined) return "–";
+        const s = Math.round(ms / 1000);
+        if (s < 60) return s + " s";
+        const m = Math.floor(s / 60), r = s % 60;
+        if (m < 60) return m + " min" + (r ? " " + r + " s" : "");
+        return Math.floor(m / 60) + " h " + (m % 60) + " min";
+    };
+    const lisbon = (ts, opts) => new Date(ts).toLocaleString("pt-PT", Object.assign({ timeZone: "Europe/Lisbon" }, opts));
+    const flag = (cc) => cc && cc.length === 2 ? String.fromCodePoint(...[...cc.toUpperCase()].map((c) => 127397 + c.charCodeAt(0))) : "";
+    const countryName = (() => { try { const d = new Intl.DisplayNames(["pt-PT"], { type: "region" }); return (cc) => { try { return cc && cc !== "(none)" ? d.of(cc) : "Desconhecido"; } catch (e) { return cc; } }; } catch (e) { return (cc) => cc; } })();
+    const devName = { desktop: "Computador", mobile: "Telemóvel", tablet: "Tablet", "(none)": "Desconhecido" };
+    const clsName = { human: "pessoa", bot: "robot", datacenter: "data center / VPN" };
 
-    async function call(body) {
-        const res = await fetch("/api/funds", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.assign({ password }, body)),
-        });
+    // ---------- auth ----------
+    async function post(body) {
+        const res = await fetch("/api/funds", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ password }, body)) });
         const data = await res.json().catch(() => ({}));
         return { ok: res.ok, status: res.status, data };
-    }
-
-    async function loadCurrent() {
-        const res = await fetch("/api/funds", { cache: "no-store" });
-        const f = await res.json();
-        $("nowEur").textContent = fmt(f.eur, "EUR");
-        const extra = [];
-        if (f.usd > 0) extra.push(fmt(f.usd, "USD"));
-        if (f.gbp > 0) extra.push(fmt(f.gbp, "GBP"));
-        const when = f.updatedAt ? new Date(f.updatedAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "never";
-        $("nowInfo").textContent = (extra.length ? "+ " + extra.join(" + ") + " · " : "") + "Last updated: " + when;
-        $("eur").value = f.eur || 0;
-        $("usd").value = f.usd || 0;
-        $("gbp").value = f.gbp || 0;
-        $("count").value = f.count || 0;
-    }
-
-    function showEdit() {
-        $("login").classList.add("hidden");
-        $("edit").classList.remove("hidden");
-        loadCurrent().catch(() => { $("nowInfo").textContent = "Could not load the current total."; });
     }
 
     $("login").addEventListener("submit", async (e) => {
         e.preventDefault();
         password = $("pass").value;
-        $("loginMsg").textContent = "Checking…";
-        $("loginMsg").className = "msg";
-        const r = await call({ check: true }).catch(() => ({ ok: false, status: 0 }));
+        $("loginMsg").textContent = "A verificar…"; $("loginMsg").className = "msg";
+        const r = await post({ check: true }).catch(() => ({ ok: false, status: 0 }));
         if (r.ok) {
-            try {
-                if ($("remember").checked) localStorage.setItem(KEY, password);
-                else sessionStorage.setItem(KEY, password);
-            } catch (err) {}
+            try { if ($("remember").checked) localStorage.setItem(KEY, password); else sessionStorage.setItem(KEY, password); } catch (err) {}
             $("loginMsg").textContent = "";
-            showEdit();
+            start();
         } else {
-            $("loginMsg").textContent = r.status === 401 ? "Wrong password."
-                : r.status === 503 ? "The backoffice has no password yet. Add ADMIN_PASSWORD in Netlify (Site configuration → Environment variables), then try again."
-                : "Could not reach the server. Try again.";
+            $("loginMsg").textContent = r.status === 401 ? "Palavra-passe errada."
+                : r.status === 503 ? "O backoffice ainda não tem palavra-passe. Crie a variável ADMIN_PASSWORD no Netlify e faça um novo deploy."
+                : "Sem ligação ao servidor. Tente outra vez.";
             $("loginMsg").className = "msg err";
-        }
-    });
-
-    $("edit").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        $("save").disabled = true;
-        $("editMsg").textContent = "Saving…";
-        $("editMsg").className = "msg";
-        const r = await call({ eur: $("eur").value, usd: $("usd").value || 0, gbp: $("gbp").value || 0, count: $("count").value || 0 })
-            .catch(() => ({ ok: false, status: 0 }));
-        $("save").disabled = false;
-        if (r.ok) {
-            $("editMsg").textContent = "Saved. The homepage shows " + fmt(r.data.totals.eur, "EUR") + " now.";
-            $("editMsg").className = "msg ok";
-            loadCurrent();
-        } else if (r.status === 401) {
-            $("editMsg").textContent = "Password no longer valid. Log in again.";
-            $("editMsg").className = "msg err";
-            logout();
-        } else {
-            $("editMsg").textContent = (r.data && r.data.error) ? "Not saved: " + r.data.error + "." : "Not saved. Check your connection and try again.";
-            $("editMsg").className = "msg err";
         }
     });
 
     function logout() {
         try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {}
         password = "";
-        $("edit").classList.add("hidden");
+        $("app").classList.add("hidden");
         $("login").classList.remove("hidden");
     }
     $("logout").addEventListener("click", (e) => { e.preventDefault(); logout(); });
 
+    function start() {
+        $("login").classList.add("hidden");
+        $("app").classList.remove("hidden");
+        try { $("notrack").checked = localStorage.getItem("pf_notrack") === "1"; } catch (e) {}
+        loadVisits();
+        loadFund();
+    }
+
+    // ---------- tabs ----------
+    function showTab(name) {
+        $("tabVisits").setAttribute("aria-selected", name === "visits");
+        $("tabFund").setAttribute("aria-selected", name === "fund");
+        $("visits").classList.toggle("hidden", name !== "visits");
+        $("fund").classList.toggle("hidden", name !== "fund");
+    }
+    $("tabVisits").addEventListener("click", () => showTab("visits"));
+    $("tabFund").addEventListener("click", () => showTab("fund"));
+
+    $("notrack").addEventListener("change", () => {
+        try { if ($("notrack").checked) localStorage.setItem("pf_notrack", "1"); else localStorage.removeItem("pf_notrack"); } catch (e) {}
+    });
+
+    // ---------- fund ----------
+    async function loadFund() {
+        const f = await fetch("/api/funds", { cache: "no-store" }).then((r) => r.json()).catch(() => null);
+        if (!f) { $("nowInfo").textContent = "Não foi possível carregar o total."; return; }
+        $("nowEur").textContent = money(f.eur, "EUR");
+        const extra = [];
+        if (f.usd > 0) extra.push(money(f.usd, "USD"));
+        if (f.gbp > 0) extra.push(money(f.gbp, "GBP"));
+        const when = f.updatedAt ? lisbon(f.updatedAt, { dateStyle: "medium", timeStyle: "short" }) : "nunca";
+        $("nowInfo").textContent = (extra.length ? "+ " + extra.join(" + ") + " · " : "") + "Última atualização: " + when;
+        $("eur").value = f.eur || 0; $("usd").value = f.usd || 0; $("gbp").value = f.gbp || 0; $("count").value = f.count || 0;
+    }
+
+    $("edit").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        $("save").disabled = true;
+        $("editMsg").textContent = "A gravar…"; $("editMsg").className = "msg";
+        const r = await post({ eur: $("eur").value, usd: $("usd").value || 0, gbp: $("gbp").value || 0, count: $("count").value || 0 }).catch(() => ({ ok: false, status: 0 }));
+        $("save").disabled = false;
+        if (r.ok) {
+            $("editMsg").textContent = "Gravado. O site já mostra " + money(r.data.totals.eur, "EUR") + ".";
+            $("editMsg").className = "msg ok";
+            loadFund();
+        } else if (r.status === 401) {
+            logout();
+        } else {
+            $("editMsg").textContent = "Não gravado. Verifique a ligação e tente outra vez.";
+            $("editMsg").className = "msg err";
+        }
+    });
+
+    // ---------- visits ----------
+    const state = { range: "today", traffic: "human" };
+    const iso = (d) => d.toISOString().slice(0, 10);
+    function rangeDates(r) {
+        const now = new Date();
+        const today = iso(now);
+        if (r === "today") return [today, today];
+        if (r === "yesterday") { const y = new Date(now); y.setUTCDate(y.getUTCDate() - 1); return [iso(y), iso(y)]; }
+        const f = new Date(now); f.setUTCDate(f.getUTCDate() - (Number(r) - 1));
+        return [iso(f), today];
+    }
+
+    function pick(groupId, attr, key) {
+        $(groupId).addEventListener("click", (e) => {
+            const b = e.target.closest("button");
+            if (!b) return;
+            state[key] = b.dataset[attr];
+            $(groupId).querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b));
+            loadVisits();
+        });
+    }
+    pick("range", "r", "range");
+    pick("traffic", "t", "traffic");
+
+    let loadSeq = 0;
+    let last = null;
+    async function loadVisits() {
+        const seq = ++loadSeq;
+        const [from, to] = rangeDates(state.range);
+        $("dash").classList.add("loading");
+        $("updated").textContent = "A carregar…";
+        let res;
+        try {
+            res = await fetch(`/api/stats?from=${from}&to=${to}&traffic=${state.traffic}`, { headers: { "x-admin-password": password }, cache: "no-store" });
+        } catch (e) { $("updated").textContent = "Sem ligação."; $("dash").classList.remove("loading"); return; }
+        if (seq !== loadSeq) return;
+        if (res.status === 401) return logout();
+        if (!res.ok) { $("updated").textContent = "Erro ao carregar (" + res.status + ")."; $("dash").classList.remove("loading"); return; }
+        const d = await res.json();
+        if (seq !== loadSeq) return;
+        last = d;
+        render(d);
+        $("dash").classList.remove("loading");
+        $("updated").textContent = "Atualizado às " + lisbon(d.generatedAt, { hour: "2-digit", minute: "2-digit" });
+    }
+    setInterval(() => { if (!document.hidden && !$("app").classList.contains("hidden") && state.range === "today") loadVisits(); }, 60000);
+
+    function render(d) {
+        const t = d.totals;
+        $("kVisitors").textContent = num(t.visitors);
+        $("kSessions").textContent = num(t.sessions);
+        $("kViews").textContent = num(t.pageviews);
+        $("kSession").textContent = dur(t.avgSessionMs);
+        $("kPage").textContent = dur(t.avgPageMs);
+        $("kBounce").textContent = t.bounceRate === null ? "–" : Math.round(t.bounceRate * 100) + "%";
+
+        const c = d.classes;
+        const totalV = c.human.visitors + c.bot.visitors + c.datacenter.visitors;
+        const pg = (n) => num(n) + (n === 1 ? " página" : " páginas");
+        const pct = (n) => totalV ? Math.round((n / totalV) * 100) + "%" : "";
+        $("qHuman").textContent = num(c.human.visitors); $("qHumanV").textContent = [pct(c.human.visitors), pg(c.human.views)].filter(Boolean).join(" · ");
+        $("qDc").textContent = num(c.datacenter.visitors); $("qDcV").textContent = [pct(c.datacenter.visitors), pg(c.datacenter.views)].filter(Boolean).join(" · ");
+        $("qBot").textContent = num(c.bot.visitors); $("qBotV").textContent = [pct(c.bot.visitors), pg(c.bot.views)].filter(Boolean).join(" · ");
+
+        const single = d.from === d.to;
+        $("chartTitle").textContent = single ? "Visitantes por hora (Lisboa)" : "Visitantes por dia";
+        const series = single
+            ? d.byHour.map((h) => ({ label: String(h.hour).padStart(2, "0") + "h", tip: String(h.hour).padStart(2, "0") + ":00–" + String(h.hour).padStart(2, "0") + ":59", v: h.visitors, views: h.views }))
+            : d.byDay.map((x) => ({ label: new Date(x.date + "T12:00:00Z").toLocaleDateString("pt-PT", { day: "numeric", month: "short" }), tip: new Date(x.date + "T12:00:00Z").toLocaleDateString("pt-PT", { weekday: "long", day: "numeric", month: "long" }), v: x.visitors, views: x.views }));
+        drawChart(series);
+
+        $("pages").innerHTML = d.pages.length
+            ? `<table><thead><tr><th>Página</th><th class="n">Vistas</th><th class="n">Visitantes</th><th class="n">Tempo médio</th></tr></thead><tbody>${
+                d.pages.map((p) => `<tr><td class="name">${esc(p.path)}</td><td class="n">${num(p.views)}</td><td class="n">${num(p.visitors)}</td><td class="n">${dur(p.avgMs)}</td></tr>`).join("")
+              }</tbody></table>`
+            : `<p class="empty">Sem visitas neste período.</p>`;
+
+        list("sources", d.sources, (n) => n === "Direct / typed" ? "Direto" : n);
+        list("countries", d.countries, (n) => (flag(n) + " " + countryName(n)).trim());
+        list("cities", d.cities, (n) => n === "(none)" ? "Desconhecida" : n);
+        list("devices", d.devices, (n) => devName[n] || n);
+        list("browsers", d.browsers);
+        list("systems", d.systems);
+
+        $("recent").innerHTML = d.recent.length ? d.recent.map((s) => {
+            const where = [flag(s.cc), s.city, s.cc && !s.city ? countryName(s.cc) : ""].filter(Boolean).join(" ");
+            const from = s.utm ? (s.ref ? `${s.utm} (via ${s.ref})` : s.utm) : (s.ref || "direto");
+            return `<div class="visit"><div class="head">
+                <span class="when">${esc(lisbon(s.start, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }))}</span>
+                <span class="badge ${esc(s.cls)}">${esc(clsName[s.cls] || s.cls)}</span>
+                <span class="meta">${esc(where || "local desconhecido")}</span>
+                <span class="meta">${esc(devName[s.dev] || s.dev)} · ${esc(s.br)} · ${esc(s.os)}</span>
+                <span class="meta">via ${esc(from)}</span>
+                <span class="meta"><b>${dur(s.ms)}</b> no site</span>
+              </div><ol>${s.pages.map((p) => `<li>${esc(p.path)} <span>· ${dur(p.ms)}</span></li>`).join("")}</ol></div>`;
+        }).join("") : `<p class="empty">Sem visitas neste período.</p>`;
+    }
+
+    function list(id, rows, label = (n) => n) {
+        if (!rows.length) { $(id).innerHTML = `<p class="empty">Sem dados.</p>`; return; }
+        const max = Math.max(...rows.map((r) => r.count));
+        $(id).innerHTML = `<table><tbody>${rows.map((r) => `<tr><td class="name">${esc(label(r.name))}<div class="meter"><i style="width:${(r.count / max) * 100}%"></i></div></td><td class="n">${num(r.count)}</td></tr>`).join("")}</tbody></table>`;
+    }
+
+    function drawChart(series) {
+        const el = $("chart");
+        const W = el.clientWidth || 600, H = 220, padL = 30, padB = 22, padT = 8;
+        const max = Math.max(1, ...series.map((s) => s.v));
+        const step = max <= 5 ? 1 : Math.ceil(max / 4);
+        const top = Math.ceil(max / step) * step;
+        const n = series.length, slot = (W - padL) / n, bw = Math.max(2, Math.min(28, slot - 2));
+        const y = (v) => padT + (H - padT - padB) * (1 - v / top);
+        let g = "";
+        for (let v = 0; v <= top; v += step) g += `<line class="gridline" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+        const every = Math.ceil(n / Math.max(1, Math.floor((W - padL) / 46)));
+        series.forEach((s, i) => {
+            const cx = padL + slot * i + slot / 2;
+            const h = Math.max(0, y(0) - y(s.v));
+            const r = Math.min(4, bw / 2, h);
+            const x0 = cx - bw / 2, y0 = y(0) - h;
+            const path = h > 0 ? `M${x0},${y(0)} V${y0 + r} Q${x0},${y0} ${x0 + r},${y0} H${x0 + bw - r} Q${x0 + bw},${y0} ${x0 + bw},${y0 + r} V${y(0)} Z` : "";
+            g += `<g data-i="${i}"><rect class="hit" x="${padL + slot * i}" y="${padT}" width="${slot}" height="${H - padT - padB}"/>${path ? `<path class="bar" d="${path}"/>` : ""}</g>`;
+            if (i % every === 0) g += `<text class="axis" x="${cx}" y="${H - 6}" text-anchor="middle">${esc(s.label)}</text>`;
+        });
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de visitantes">${g}</svg><div class="tip hidden" id="tip"></div>`;
+        const tip = el.querySelector("#tip");
+        el.querySelectorAll("g[data-i]").forEach((node) => {
+            const s = series[node.dataset.i];
+            node.addEventListener("mouseenter", () => {
+                tip.innerHTML = `<b>${esc(s.tip)}</b>${num(s.v)} visitante${s.v === 1 ? "" : "s"} · ${num(s.views)} página${s.views === 1 ? "" : "s"}`;
+                const i = Number(node.dataset.i);
+                tip.style.left = Math.min(W - 70, Math.max(70, padL + slot * i + slot / 2)) + "px";
+                tip.style.top = Math.max(30, y(s.v)) + "px";
+                tip.classList.remove("hidden");
+            });
+            node.addEventListener("mouseleave", () => tip.classList.add("hidden"));
+        });
+    }
+    let resizeT;
+    window.addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (last) render(last); }, 150); });
+
     if (password) {
-        call({ check: true }).then((r) => { if (r.ok) showEdit(); else logout(); }).catch(() => {});
+        post({ check: true }).then((r) => { if (r.ok) start(); else logout(); }).catch(() => {});
     }
 </script>
 </body>

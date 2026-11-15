@@ -30,4 +30,4 @@ If the goal is not reached by the deadline, funds go to a charity of the organiz
 
 
 ## Background image
-- `img/taycan-desktop.webp` (2560×1440) and `img/taycan-mobile.webp` (1080×1920) — stills rendered from the 2025 Taycan Turbo GT Weissach Package 3D model by Ddiaz Design (Sketchfab, CC BY-NC-SA 4.0). Shared under the same licence.
+- `img/taycan-desktop-v2.webp` (2560×1440) and `img/taycan-mobile-v2.webp` (1080×1920) — stills rendered from the 2025 Taycan Turbo GT Weissach Package 3D model by Ddiaz Design (Sketchfab, CC BY-NC-SA 4.0). Shared under the same licence.

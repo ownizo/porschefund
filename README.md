@@ -4,27 +4,17 @@ Humorous crowdfunding page for a regular Portuguese guy trying to buy a Porsche 
 
 ## Files
 - `index.html` — homepage
-- `funds.json` — public totals, updated by the PayPal webhook
-- `api/paypal-webhook.js` — PayPal webhook endpoint written for Vercel. **Not active:** the site is hosted on Netlify, which does not run this file. Until it is set up, update `funds.json` by hand.
+- `funds.json` — public totals shown on the homepage, updated by hand
 - `admin.html` — local preview of the counter (changes only the browser you use it in)
 
-## PayPal webhook
-PayPal.me links do not call this webhook. It runs only for payments made through a PayPal REST app (Checkout or a button on that app).
+## Updating the counter
+The donate buttons are PayPal.me links, which do not notify the site. Update the total by hand:
 
-1. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications/live), create an app.
-2. Add a webhook. URL: `https://YOUR-VERCEL-DOMAIN/api/paypal-webhook`
-3. Subscribe to `PAYMENT.CAPTURE.COMPLETED` and `PAYMENT.SALE.COMPLETED`.
-4. Copy the Webhook ID.
-5. Deploy this repo on Vercel and set:
-   - `PAYPAL_CLIENT_ID`
-   - `PAYPAL_CLIENT_SECRET`
-   - `PAYPAL_WEBHOOK_ID`
-   - `PAYPAL_MODE` = `live` (or `sandbox`)
-   - `GH_FUNDS_TOKEN` — fine-grained GitHub token with Contents: Read and write on this repo only
-6. Open `https://YOUR-VERCEL-DOMAIN/api/paypal-webhook` and confirm it returns `{"ok":true}`.
-7. Send a webhook test from the PayPal dashboard.
+1. Open `funds.json` on GitHub and click the pencil (Edit).
+2. Change `eur` (and `usd` / `gbp` if any), `count` if you track it, and set `updatedAt` to the current date and time, e.g. `"2026-11-20T18:00:00Z"`.
+3. Commit to `main`. Netlify publishes the new total in about a minute.
 
-The endpoint checks the PayPal signature before it adds the amount to `funds.json`. It does not store the payer's name or email. The homepage reads `funds.json` and counts euros toward the goal.
+`eur` is the number the progress bar uses. `usd` and `gbp` are shown as extra lines.
 
 If the goal is not reached by the deadline, funds go to a charity of the organizer’s choice.
 

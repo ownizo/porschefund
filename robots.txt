@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /admin
-Disallow: /api/
 
 # AI crawlers are welcome. A short map of the site is at /llms.txt
 User-agent: GPTBot

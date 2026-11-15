@@ -201,7 +201,7 @@
                     <div class="progress-bar">
                         <div class="progress-fill" id="bar" style="width: 0%">0%</div>
                     </div>
-                    <p id="extras" style="color:#c8c8c8;font-size:0.9rem;">Updated when PayPal confirms a payment.</p>
+                    <p id="extras" style="color:#c8c8c8;font-size:0.9rem;">Updated by hand as donations come in.</p>
                 </div>
                 <p>The idea is simple: <strong>€1 / $1 / £1 per person</strong>. If 110,000 kind (or slightly chaotic) humans each send the price of a coffee, we get there. No complicated tiers. No stretch goals that involve buying a yacht. Just the car.</p>
             </article>
@@ -267,9 +267,13 @@
             const extras = [];
             if (Number(funds.usd) > 0) extras.push(formatMoney(funds.usd, "USD"));
             if (Number(funds.gbp) > 0) extras.push(formatMoney(funds.gbp, "GBP"));
+            const when = funds.updatedAt ? new Date(funds.updatedAt) : null;
+            const stamp = when && !Number.isNaN(when.getTime())
+                ? "Last updated " + when.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) + "."
+                : "Updated by hand as donations come in.";
             document.getElementById("extras").textContent = extras.length
-                ? "Also received " + extras.join(" and ") + ". The bar counts euros only."
-                : "Updated when PayPal confirms a payment.";
+                ? "Also received " + extras.join(" and ") + ". The bar counts euros only. " + stamp
+                : stamp;
         }
         async function loadFunds() {
             let funds = { eur: 0, usd: 0, gbp: 0, updatedAt: null };

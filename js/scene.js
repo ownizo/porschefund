@@ -5,7 +5,7 @@ let base = null;
 let scroll = 0;
 const pointer = { x: 0, y: 0 };
 
-client.init("c6004141452e4d3ab048bf0fee52666d", {
+client.init("8568d9d14a994b9cae59499f0dbed21e", {
   success: function (api) {
     apiRef = api;
     api.start();
@@ -44,6 +44,7 @@ client.init("c6004141452e4d3ab048bf0fee52666d", {
   scrollwheel: 0,
   transparent: 0,
   autospin: 0,
+  max_texture_size: 1024,
 });
 
 function pose(t) {

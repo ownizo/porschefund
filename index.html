@@ -7,8 +7,8 @@
     <meta name="description" content="A regular Portuguese dad is raising €1, $1 or £1 at a time to buy a Porsche Taycan by 2 August 2027. If it falls short, the money goes to charity.">
     <link rel="canonical" href="https://porschefund.com/">
     <link rel="describedby" href="/llms.txt" type="text/plain">
-    <link rel="preload" as="image" href="/img/taycan-desktop.webp" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
-    <link rel="preload" as="image" href="/img/taycan-mobile.webp" type="image/webp" media="(max-width: 720px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/img/taycan-desktop.webp" type="image/webp" media="(min-width: 721px) and (orientation: landscape)" fetchpriority="high">
+    <link rel="preload" as="image" href="/img/taycan-mobile.webp" type="image/webp" media="(max-width: 720px), (orientation: portrait)" fetchpriority="high">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,8 +42,11 @@
             pointer-events: none;
             background: #070709 url("/img/taycan-desktop.webp") center / cover no-repeat;
         }
-        @media (max-width: 720px) {
-            #stage { background-image: url("/img/taycan-mobile.webp"); background-position: center bottom; }
+        @media (min-width: 721px) and (max-aspect-ratio: 16/10) {
+            #stage { background-size: 100% auto; background-position: center 62%; }
+        }
+        @media (max-width: 720px), (orientation: portrait) {
+            #stage { background-image: url("/img/taycan-mobile.webp"); background-size: cover; background-position: center bottom; }
         }
         .scroll { position: relative; z-index: 1; }
         .panel {

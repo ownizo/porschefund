@@ -114,6 +114,7 @@
             margin-top: 1rem;
         }
         .cta:hover { background: #b80018; }
+        .paypal-note { font-size: 0.8rem; color: #888; margin-top: 0.5rem; }
     </style>
 </head>
 <body>
@@ -147,7 +148,8 @@
 
         <section id="donate">
             <h2>How to Contribute</h2>
-            <p>Bank transfer only for now. No platform fees eating half the money. Just send whatever you can (ideally 1 unit of your local currency) and, if you want, put something funny in the reference so I know you’re real.</p>
+            <p>Bank transfer or PayPal. No platform fees eating half the money. Just send whatever you can (ideally 1 unit of your local currency) and, if you want, put something funny in the reference so I know you’re real.</p>
+            
             <div class="donate-box">
                 <strong>EUR (IBAN)</strong>
                 <div class="bank-details">BE27 9670 5187 6673</div>
@@ -162,6 +164,19 @@ Sort code: 23-14-70
 IBAN: GB43 TRWI 2314 7091 9203 13</div>
             </div>
             <p style="margin-top:1rem;">Reference suggestion: <code>TAYCAN-DREAM</code> or your own joke. I’ll try to keep a running total of funny references.</p>
+
+            <div style="text-align:center; margin-top:2.5rem;">
+                <p><strong>Or donate instantly with PayPal:</strong></p>
+                <form action="https://www.paypal.com/donate" method="post" target="_blank">
+                    <input type="hidden" name="business" value="YOUR_PAYPAL_EMAIL_HERE" />
+                    <input type="hidden" name="no_recurring" value="1" />
+                    <input type="hidden" name="item_name" value="Porsche Taycan Dream – 1 unit for a regular Portuguese guy" />
+                    <input type="hidden" name="currency_code" value="EUR" />
+                    <input type="hidden" name="amount" value="1.00" />
+                    <button type="submit" class="cta" style="border:none; cursor:pointer; font-size:1.05rem;">Donate €1 with PayPal</button>
+                </form>
+                <p class="paypal-note">(Replace YOUR_PAYPAL_EMAIL_HERE in index.html with your real PayPal email address)</p>
+            </div>
         </section>
 
         <section>

@@ -6,6 +6,7 @@ Humorous crowdfunding page for a regular Portuguese guy trying to buy a Porsche 
 - `index.html` — homepage. Reads the totals from `/api/funds` (falls back to `funds.json`).
 - `admin.html` — backoffice at porschefund.com/admin. Log in and set the totals everyone sees.
 - `netlify/functions/funds.mjs` — `/api/funds`: GET returns the totals; POST saves them (password required). Stored in Netlify Blobs.
+- `js/track.js` + `netlify/functions/track.mjs` + `netlify/functions/stats.mjs` — visit statistics shown in the backoffice (Visitas tab). No cookies; visitors are counted with a daily-salted hash of IP + browser, the IP itself is never stored. Datacenter/VPN detection uses `netlify/lib/dc-ranges.mjs`, built from X4BNet/lists_vpn (IPLocate.io data, CC BY-SA 4.0).
 - `funds.json` — fallback totals, only used if the function is unavailable.
 
 ## Backoffice password

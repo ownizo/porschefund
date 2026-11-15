@@ -1,24 +1,10 @@
 import { getStore } from "@netlify/blobs";
-import { timingSafeEqual, createHash } from "node:crypto";
+import { passwordOk, adminConfigured, slow, json } from "../lib/auth.mjs";
 
 const KEY = "totals";
 const EMPTY = { eur: 0, usd: 0, gbp: 0, count: 0, updatedAt: null };
 
-const json = (body, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-  });
-
 const store = () => getStore({ name: "porschefund", consistency: "strong" });
-
-function passwordOk(given) {
-  const expected = process.env.ADMIN_PASSWORD || "";
-  if (!expected || typeof given !== "string") return false;
-  const a = createHash("sha256").update(given).digest();
-  const b = createHash("sha256").update(expected).digest();
-  return timingSafeEqual(a, b);
-}
 
 function money(value) {
   const n = Number(value);
@@ -41,10 +27,10 @@ export default async (req) => {
     return json({ error: "invalid body" }, 400);
   }
 
-  if (!process.env.ADMIN_PASSWORD) return json({ error: "not configured" }, 503);
+  if (!adminConfigured()) return json({ error: "not configured" }, 503);
 
   if (!passwordOk(body.password)) {
-    await new Promise((r) => setTimeout(r, 800)); // slow down guessing
+    await slow();
     return json({ error: "wrong password" }, 401);
   }
 

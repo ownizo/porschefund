@@ -7,6 +7,8 @@
     <meta name="description" content="A regular Portuguese dad is raising €1, $1 or £1 at a time to buy a Porsche Taycan by 2 August 2027. If it falls short, the money goes to charity.">
     <link rel="canonical" href="https://porschefund.com/">
     <link rel="describedby" href="/llms.txt" type="text/plain">
+    <link rel="preload" href="/assets/taycan.glb" as="fetch" type="model/gltf-binary" crossorigin>
+    <link rel="modulepreload" href="/js/scene.js">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,7 +44,29 @@
             border: 0;
             pointer-events: none;
             background: #070709;
+            opacity: 0;
+            transition: opacity 1.4s ease;
         }
+        body.car-ready #stage { opacity: 1; }
+        body.no-3d #stage { display: none; }
+        body.no-3d { background: radial-gradient(ellipse at 60% 40%, #1a1014 0%, #070709 70%); }
+        #loader {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            width: min(240px, 60vw);
+            text-align: center;
+            color: #8d8d93;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            transition: opacity 0.8s ease;
+        }
+        #loader.done { opacity: 0; }
+        #loader .track { height: 2px; background: rgba(255,255,255,0.1); margin-top: 0.8rem; overflow: hidden; border-radius: 2px; }
+        #loader-bar { display: block; height: 100%; width: 8%; background: var(--porsche-red); transition: width 0.25s ease; }
         .scroll { position: relative; z-index: 1; }
         .panel {
             min-height: 118vh;
@@ -191,13 +215,14 @@
     </style>
 </head>
 <body>
-    <iframe id="stage" title="Porsche 911 Turbo 3D model" allow="autoplay; fullscreen"></iframe>
+    <canvas id="stage" role="img" aria-label="3D Porsche Taycan Turbo GT that turns as you scroll"></canvas>
+    <div id="loader" aria-hidden="true">Warming up the Taycan<div class="track"><span id="loader-bar"></span></div></div>
     <p class="hint">Scroll to walk around it</p>
     <main class="scroll">
         <section class="panel">
             <div class="hero-copy">
                 <h1>Help me buy a<br><span>Porsche Taycan</span></h1>
-                <p class="subtitle">One euro, one dollar, or one pound at a time. A regular Portuguese dad, two kids, a childhood dream. The car you can walk around is a 911 Turbo, because the Taycan model took longer to load than the fund will take to fill. The dream is still the Taycan.</p>
+                <p class="subtitle">One euro, one dollar, or one pound at a time. A regular Portuguese dad, two kids, a childhood dream. Scroll down and walk around the car I am asking you to help me buy. It loads faster than the fund fills. For now.</p>
             </div>
         </section>
 
@@ -269,10 +294,9 @@
     </main>
     <footer class="fine">
         Made by a Portuguese dad who still believes in childhood dreams.<br>
-        3D 911 Turbo by <a href="https://sketchfab.com/3d-models/free-1975-porsche-911-930-turbo-8568d9d14a994b9cae59499f0dbed21e" target="_blank" rel="noopener">Lionsharp Studios</a>, CC BY. Not affiliated with Porsche AG.
+        3D model: <a href="https://sketchfab.com/3d-models/2025-porsche-taycan-turbo-gt-weissach-package-4e1abafe7cf5413587a421377624ba08" target="_blank" rel="noopener">2025 Porsche Taycan Turbo GT Weissach Package</a> by Ddiaz Design, <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Compressed and re-materialled for the web; the optimised file is shared under the same licence. Not affiliated with Porsche AG.
     </footer>
-    <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
-    <script src="js/scene.js"></script>
+    <script type="module" src="/js/scene.js"></script>
     <script>
         const GOAL = 110000;
         function formatMoney(amount, currency) {

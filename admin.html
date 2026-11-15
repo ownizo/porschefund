@@ -3,43 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#070709">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Porsche Fund Admin</title>
+    <title>Porsche Fund · Backoffice</title>
     <style>
-        body { font-family: system-ui, sans-serif; background:#111; color:#eee; padding:2rem; max-width:500px; margin:0 auto; }
-        input, button { width:100%; padding:0.8rem; margin:0.5rem 0; font-size:1rem; border-radius:6px; border:1px solid #333; background:#1a1a1a; color:#fff; }
-        button { background:#d5001c; border:none; cursor:pointer; font-weight:700; }
-        button:hover { background:#b80018; }
-        .hidden { display:none; }
-        .error { color:#f66; }
-        h1 { color:#c9a227; }
+        * { box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #070709; color: #eee; margin: 0; padding: 2rem 1.2rem; }
+        main { max-width: 440px; margin: 0 auto; }
+        h1 { color: #c9a227; font-size: 1.6rem; margin: 0 0 0.3rem; }
+        .sub { color: #999; margin: 0 0 1.6rem; font-size: 0.95rem; }
+        label { display: block; font-size: 0.9rem; color: #bbb; margin: 1rem 0 0.35rem; }
+        input { width: 100%; padding: 0.85rem; font-size: 1.1rem; border-radius: 10px; border: 1px solid #333; background: #141418; color: #fff; }
+        input:focus { outline: 2px solid #c9a227; border-color: transparent; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        button { width: 100%; margin-top: 1.4rem; padding: 0.95rem; font-size: 1.05rem; font-weight: 700; border: 0; border-radius: 999px; background: #d5001c; color: #fff; cursor: pointer; }
+        button:disabled { opacity: 0.6; cursor: wait; }
+        .msg { margin-top: 1rem; min-height: 1.4em; font-size: 0.95rem; }
+        .ok { color: #3fd48b; }
+        .err { color: #ff6b6b; }
+        .now { background: #141418; border: 1px solid #26262c; border-radius: 12px; padding: 1rem; margin-bottom: 0.5rem; }
+        .now strong { font-size: 1.8rem; color: #c9a227; display: block; }
+        .now span { color: #999; font-size: 0.85rem; }
+        .remember { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.8rem; font-size: 0.9rem; color: #bbb; }
+        .remember input { width: auto; }
+        a { color: #c9a227; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <h1>Fund Admin</h1>
-    <div id="admin">
-        <p>Current raised (EUR): <strong id="current">0</strong></p>
-        <label>New total amount (€):</label>
-        <input type="number" id="amount" step="0.01" min="0">
-        <button onclick="save()">Update Counter</button>
-        <p style="margin-top:1rem;color:#888;font-size:0.85rem;">Saved in this browser, so the homepage here updates immediately. It does not change the public total for other people. That number lives in funds.json.</p>
-        <p><a href="/" style="color:#c9a227;">← Back to homepage</a></p>
-    </div>
+<main>
+    <h1>Fund backoffice</h1>
+    <p class="sub">Update the total everyone sees on porschefund.com.</p>
 
-    <script>
-        const current = localStorage.getItem('porschefund_raised') || 0;
-        document.getElementById('current').textContent = current;
-        document.getElementById('amount').value = current;
+    <form id="login">
+        <label for="pass">Password</label>
+        <input type="password" id="pass" autocomplete="current-password" required>
+        <label class="remember"><input type="checkbox" id="remember" checked> Remember on this device</label>
+        <button type="submit">Log in</button>
+        <p class="msg" id="loginMsg"></p>
+    </form>
 
-        function save() {
-            const val = parseFloat(document.getElementById('amount').value) || 0;
-            localStorage.setItem('porschefund_raised', String(val));
-            localStorage.setItem('porschefund_raised_at', String(Date.now()));
-            document.getElementById('current').textContent = val;
-            alert('Updated. Open the homepage in this browser and the counter will match.');
+    <form id="edit" class="hidden">
+        <div class="now"><strong id="nowEur">€0.00</strong><span id="nowInfo">Loading…</span></div>
+
+        <label for="eur">Total in euros (€) — this fills the progress bar</label>
+        <input type="number" id="eur" inputmode="decimal" step="0.01" min="0" required>
+
+        <div class="row">
+            <div><label for="usd">Dollars ($)</label><input type="number" id="usd" inputmode="decimal" step="0.01" min="0"></div>
+            <div><label for="gbp">Pounds (£)</label><input type="number" id="gbp" inputmode="decimal" step="0.01" min="0"></div>
+        </div>
+
+        <label for="count">Number of espressos (donations), optional</label>
+        <input type="number" id="count" inputmode="numeric" step="1" min="0">
+
+        <button type="submit" id="save">Save and publish</button>
+        <p class="msg" id="editMsg"></p>
+        <p style="margin-top:1.5rem;font-size:0.9rem;"><a href="/" target="_blank" rel="noopener">Open the homepage</a> · <a href="#" id="logout">Log out</a></p>
+    </form>
+</main>
+<script>
+    const $ = (id) => document.getElementById(id);
+    const KEY = "porschefund_admin_pass";
+    let password = "";
+    try { password = localStorage.getItem(KEY) || sessionStorage.getItem(KEY) || ""; } catch (e) {}
+
+    const fmt = (n, c) => new Intl.NumberFormat("en-GB", { style: "currency", currency: c }).format(n || 0);
+
+    async function call(body) {
+        const res = await fetch("/api/funds", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.assign({ password }, body)),
+        });
+        const data = await res.json().catch(() => ({}));
+        return { ok: res.ok, status: res.status, data };
+    }
+
+    async function loadCurrent() {
+        const res = await fetch("/api/funds", { cache: "no-store" });
+        const f = await res.json();
+        $("nowEur").textContent = fmt(f.eur, "EUR");
+        const extra = [];
+        if (f.usd > 0) extra.push(fmt(f.usd, "USD"));
+        if (f.gbp > 0) extra.push(fmt(f.gbp, "GBP"));
+        const when = f.updatedAt ? new Date(f.updatedAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "never";
+        $("nowInfo").textContent = (extra.length ? "+ " + extra.join(" + ") + " · " : "") + "Last updated: " + when;
+        $("eur").value = f.eur || 0;
+        $("usd").value = f.usd || 0;
+        $("gbp").value = f.gbp || 0;
+        $("count").value = f.count || 0;
+    }
+
+    function showEdit() {
+        $("login").classList.add("hidden");
+        $("edit").classList.remove("hidden");
+        loadCurrent().catch(() => { $("nowInfo").textContent = "Could not load the current total."; });
+    }
+
+    $("login").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        password = $("pass").value;
+        $("loginMsg").textContent = "Checking…";
+        $("loginMsg").className = "msg";
+        const r = await call({ check: true }).catch(() => ({ ok: false, status: 0 }));
+        if (r.ok) {
+            try {
+                if ($("remember").checked) localStorage.setItem(KEY, password);
+                else sessionStorage.setItem(KEY, password);
+            } catch (err) {}
+            $("loginMsg").textContent = "";
+            showEdit();
+        } else {
+            $("loginMsg").textContent = r.status === 401 ? "Wrong password."
+                : r.status === 503 ? "The backoffice has no password yet. Add ADMIN_PASSWORD in Netlify (Site configuration → Environment variables), then try again."
+                : "Could not reach the server. Try again.";
+            $("loginMsg").className = "msg err";
         }
-    </script>
+    });
+
+    $("edit").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        $("save").disabled = true;
+        $("editMsg").textContent = "Saving…";
+        $("editMsg").className = "msg";
+        const r = await call({ eur: $("eur").value, usd: $("usd").value || 0, gbp: $("gbp").value || 0, count: $("count").value || 0 })
+            .catch(() => ({ ok: false, status: 0 }));
+        $("save").disabled = false;
+        if (r.ok) {
+            $("editMsg").textContent = "Saved. The homepage shows " + fmt(r.data.totals.eur, "EUR") + " now.";
+            $("editMsg").className = "msg ok";
+            loadCurrent();
+        } else if (r.status === 401) {
+            $("editMsg").textContent = "Password no longer valid. Log in again.";
+            $("editMsg").className = "msg err";
+            logout();
+        } else {
+            $("editMsg").textContent = (r.data && r.data.error) ? "Not saved: " + r.data.error + "." : "Not saved. Check your connection and try again.";
+            $("editMsg").className = "msg err";
+        }
+    });
+
+    function logout() {
+        try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {}
+        password = "";
+        $("edit").classList.add("hidden");
+        $("login").classList.remove("hidden");
+    }
+    $("logout").addEventListener("click", (e) => { e.preventDefault(); logout(); });
+
+    if (password) {
+        call({ check: true }).then((r) => { if (r.ok) showEdit(); else logout(); }).catch(() => {});
+    }
+</script>
 </body>
 </html>

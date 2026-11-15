@@ -304,22 +304,18 @@
         async function loadFunds() {
             let funds = { eur: 0, usd: 0, gbp: 0, updatedAt: null };
             try {
-                const response = await fetch("funds.json?ts=" + Date.now(), { cache: "no-store" });
-                if (response.ok) funds = await response.json();
-            } catch (err) {}
-            const stored = localStorage.getItem("porschefund_raised");
-            const storedAt = Number(localStorage.getItem("porschefund_raised_at") || 0);
-            const remoteAt = funds.updatedAt ? Date.parse(funds.updatedAt) : 0;
-            if (stored !== null && stored !== "" && storedAt >= remoteAt) {
-                const local = parseFloat(stored);
-                if (!Number.isNaN(local)) funds.eur = local;
+                const response = await fetch("/api/funds", { cache: "no-store" });
+                if (!response.ok) throw new Error("api");
+                funds = await response.json();
+            } catch (err) {
+                try {
+                    const response = await fetch("funds.json?ts=" + Date.now(), { cache: "no-store" });
+                    if (response.ok) funds = await response.json();
+                } catch (e) {}
             }
             updateDisplay(funds);
         }
         loadFunds();
-        window.addEventListener("storage", function (event) {
-            if (event.key === "porschefund_raised" || event.key === "porschefund_raised_at") loadFunds();
-        });
     </script>
 </body>
 </html>

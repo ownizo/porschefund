@@ -10,233 +10,266 @@
             --porsche-red: #d5001c;
             --porsche-gold: #c9a227;
             --text: #f5f5f5;
-            --muted: #aaa;
+            --muted: #c8c8c8;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--porsche-black);
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            background: #070709;
             color: var(--text);
             line-height: 1.6;
         }
-        header {
-            text-align: center;
-            padding: 3rem 1rem 2rem;
-            background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+        #stage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: block;
+        }
+        .scroll { position: relative; z-index: 1; }
+        .panel {
+            min-height: 118vh;
+            display: flex;
+            align-items: center;
+            padding: 12vh 7vw;
+        }
+        .panel.right { justify-content: flex-end; }
+        .panel.center { justify-content: center; }
+        .card {
+            width: min(540px, 92vw);
+            padding: 1.6rem 1.5rem 1.4rem;
+            border-radius: 28px;
+            background: rgba(8, 8, 12, 0.46);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transform-style: preserve-3d;
+            animation: float 7s ease-in-out infinite;
+            transition: transform 0.18s ease, border-color 0.2s ease;
+        }
+        .card:hover { border-color: rgba(201, 162, 39, 0.55); }
+        .hero-copy {
+            width: min(460px, 90vw);
+            animation: float 8s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -12px; }
         }
         h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(2.6rem, 7vw, 5.4rem);
+            line-height: 0.92;
+            letter-spacing: -0.04em;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 0.5rem;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
         }
         h1 span { color: var(--porsche-red); }
-        .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 700px; margin: 0 auto; }
-        .hero-img {
-            width: 100%;
-            max-height: 520px;
+        .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 38rem; margin-top: 1rem; }
+        h2 { font-size: 1.7rem; margin-bottom: 0.8rem; color: var(--porsche-gold); }
+        p { margin-bottom: 0.9rem; }
+        .highlight { color: #ff4d63; font-weight: 700; }
+        a { color: var(--porsche-gold); }
+        .portrait {
+            width: 148px;
+            height: 148px;
             object-fit: cover;
+            object-position: center 18%;
+            border-radius: 50%;
+            border: 3px solid var(--porsche-gold);
             display: block;
-            margin: 1.5rem 0;
+            margin: 0 0 1rem;
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem; }
-        section { margin-bottom: 3rem; }
-        h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--porsche-gold); }
-        p { margin-bottom: 1rem; font-size: 1.05rem; }
-        .highlight { color: var(--porsche-red); font-weight: 600; }
-        .progress-wrap {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border: 1px solid #333;
-        }
+        .progress-wrap { margin: 0.4rem 0 1rem; }
+        .amount { font-size: 2.4rem; font-weight: 800; color: var(--porsche-gold); }
+        .goal { color: var(--muted); font-size: 0.95rem; }
         .progress-bar {
-            height: 28px;
-            background: #222;
-            border-radius: 14px;
+            height: 22px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
             overflow: hidden;
-            margin: 1rem 0;
+            margin: 0.7rem 0;
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--porsche-red), #ff4d4d);
             width: 0%;
-            transition: width 0.6s ease;
+            background: linear-gradient(90deg, var(--porsche-red), #ff4d4d);
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 10px;
+            padding-right: 8px;
+            font-size: 0.75rem;
             font-weight: 700;
-            font-size: 0.85rem;
         }
-        .amount { font-size: 2.2rem; font-weight: 800; color: var(--porsche-gold); }
-        .goal { color: var(--muted); }
         .note {
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             color: var(--muted);
             border-left: 3px solid var(--porsche-gold);
-            padding-left: 1rem;
-            margin-top: 1.5rem;
+            padding-left: 0.9rem;
+            margin-top: 0.6rem;
         }
-        footer {
-            text-align: center;
-            padding: 2rem 1rem;
-            color: #666;
-            font-size: 0.85rem;
-            border-top: 1px solid #222;
-        }
-        a { color: var(--porsche-gold); }
         .cta {
             display: inline-block;
             background: var(--porsche-red);
             color: white;
-            padding: 0.9rem 1.8rem;
-            border-radius: 50px;
+            padding: 0.85rem 1.4rem;
+            border-radius: 999px;
             text-decoration: none;
             font-weight: 700;
-            margin-top: 1rem;
+            margin: 0.35rem 0.25rem 0 0;
         }
-        .cta:hover { background: #b80018; }
-        .paypal-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-        .paypal-row .cta { margin-top: 0; }
+        .paypal-row { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.8rem; }
         .paypal-go {
             background: #00a86b;
             color: #042417;
             box-shadow: 0 2px 0 #06724a;
         }
-        .paypal-go:hover { background: #14c48a; color: #042417; }
+        .paypal-go:hover { background: #14c48a; }
         .paypal-other {
             background: #ffd814;
             color: #0f1111;
             border: 1px solid #fcd200;
             box-shadow: 0 2px 0 #f7ca00;
         }
-        .paypal-other:hover { background: #f7ca00; color: #0f1111; }
-        .paypal-note { font-size: 0.85rem; color: #888; margin-top: 0.85rem; }
+        .paypal-other:hover { background: #f7ca00; }
         .post-list { list-style: none; }
         .post-list a {
             display: block;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid #222;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             text-decoration: none;
             color: var(--text);
         }
         .post-list a:hover { color: var(--porsche-gold); }
-        .post-list small { display: block; color: var(--muted); font-size: 0.8rem; }
-        .portrait {
-            display: block;
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            object-position: center 18%;
-            border-radius: 50%;
-            margin: 0.4rem auto 1.2rem;
-            border: 3px solid #c9a227;
+        .post-list small { display: block; color: var(--muted); font-size: 0.78rem; }
+        .hint {
+            position: fixed;
+            left: 50%;
+            bottom: 1.2rem;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: #ddd;
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            pointer-events: none;
+            opacity: 0.8;
         }
-            display: block;
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            object-position: center 18%;
-            border-radius: 50%;
-            margin: 0.4rem auto 1.2rem;
-            border: 3px solid #c9a227;
+        footer.fine {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: #9a9a9a;
+            font-size: 0.82rem;
+            padding: 2rem 1rem 5rem;
+        }
+        @media (max-width: 720px) {
+            .panel, .panel.right { justify-content: center; min-height: 100vh; padding: 18vh 1rem; }
+            .card { animation: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .card, .hero-copy { animation: none; }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Help Me Buy a <span>Porsche Taycan</span></h1>
-        <p class="subtitle">One euro, one dollar, or one pound at a time. Because a regular Portuguese dad with two kids and a struggling business still has a childhood dream.</p>
-    </header>
-
-    <img class="hero-img" src="https://hips.hearstapps.com/mtg-prod/65ca934a18bd0e0008c3ea7a/2020-porsche-taycan-front-three-quarter-in-motion.jpg" alt="White Porsche Taycan electric driving">
-
-    <div class="container">
-        <section>
-            <h2>The (Not So) Epic Story</h2>
-            <img class="portrait" src="me.jpg" alt="The ordinary Portuguese guy behind this fund">
-            <p>Hi. I’m a completely ordinary Portuguese guy. 41 years old. House, wife, a 3-year-old boy and an 8-month-old girl. My business is the kind that barely covers the bills on a good month. Nothing historically relevant has ever happened in my life. No viral moments, no lottery wins, no sudden fame.</p>
-            <p>What I do have is a childhood dream that never left: owning a Porsche. Not a museum piece. Not a race car. Just a proper Porsche that I can drive with my kids in the back and smile like an idiot every time I get behind the wheel.</p>
-            <p>Specifically, I want a <span class="highlight">Porsche Taycan</span> — the electric one. Quiet, fast, and somehow still unmistakably Porsche. My birthday is <strong>August 2, 2027</strong>. That’s the deadline. If enough people throw in the price of a coffee, I might actually make it.</p>
-        </section>
-
-        <section>
-            <h2>The Fund Counter</h2>
-            <div class="progress-wrap">
-                <div class="amount" id="raised">€0</div>
-                <div class="goal">Goal: enough for a Taycan (~€110,000+ depending on options)</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="bar" style="width: 0%">0%</div>
-                </div>
-                <p id="extras" style="margin-top:0.5rem;color:#aaa;font-size:0.9rem;">Updated when PayPal confirms a payment.</p>
+    <canvas id="stage"></canvas>
+    <p class="hint">Scroll to walk around it</p>
+    <main class="scroll">
+        <section class="panel">
+            <div class="hero-copy">
+                <h1>Help me buy a<br><span>Porsche Taycan</span></h1>
+                <p class="subtitle">One euro, one dollar, or one pound at a time. A regular Portuguese dad, two kids, a childhood dream, and a car you can walk around.</p>
             </div>
-            <p>The idea is simple: <strong>€1 / $1 / £1 per person</strong>. If 110,000 kind (or slightly chaotic) humans each send the price of a coffee, we get there. No complicated tiers. No stretch goals that involve buying a yacht. Just the car.</p>
         </section>
 
-        <section id="donate">
-            <h2>How to Contribute</h2>
-            <p>PayPal only. No platform fees eating half the money. Just send whatever you can (ideally 1 unit of your local currency) and, if you want, add a joke or your name in the PayPal note so I know you’re real.</p>
+        <section class="panel right">
+            <article class="card">
+                <h2>The (Not So) Epic Story</h2>
+                <img class="portrait" src="me.jpg" alt="The ordinary Portuguese guy behind this fund">
+                <p>Hi. I’m a completely ordinary Portuguese guy. 41 years old. House, wife, a 3-year-old boy and an 8-month-old girl. My business is the kind that barely covers the bills on a good month. Nothing historically relevant has ever happened in my life. No viral moments, no lottery wins, no sudden fame.</p>
+                <p>What I do have is a childhood dream that never left: owning a Porsche. Not a museum piece. Not a race car. Just a proper Porsche that I can drive with my kids in the back and smile like an idiot every time I get behind the wheel.</p>
+                <p>Specifically, I want a <span class="highlight">Porsche Taycan</span> — the electric one. Quiet, fast, and somehow still unmistakably Porsche. My birthday is <strong>August 2, 2027</strong>. That’s the deadline. If enough people throw in the price of a coffee, I might actually make it.</p>
+            </article>
+        </section>
 
-            <div style="text-align:center; margin-top:1.5rem;">
+        <section class="panel">
+            <article class="card">
+                <h2>The Fund Counter</h2>
+                <div class="progress-wrap">
+                    <div class="amount" id="raised">€0</div>
+                    <div class="goal">Goal: enough for a Taycan (~€110,000+ depending on options)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="bar" style="width: 0%">0%</div>
+                    </div>
+                    <p id="extras" style="color:#c8c8c8;font-size:0.9rem;">Updated when PayPal confirms a payment.</p>
+                </div>
+                <p>The idea is simple: <strong>€1 / $1 / £1 per person</strong>. If 110,000 kind (or slightly chaotic) humans each send the price of a coffee, we get there. No complicated tiers. No stretch goals that involve buying a yacht. Just the car.</p>
+            </article>
+        </section>
+
+        <section class="panel right" id="donate">
+            <article class="card">
+                <h2>How to Contribute</h2>
+                <p>PayPal only. No platform fees eating half the money. Just send whatever you can (ideally 1 unit of your local currency) and, if you want, add a joke or your name in the PayPal note so I know you’re real.</p>
                 <p><strong>Donate with PayPal</strong></p>
-                <p class="paypal-note">Goes to <a href="https://paypal.me/hmrgoncalves" target="_blank" rel="noopener">paypal.me/hmrgoncalves</a></p>
+                <p style="font-size:0.85rem;color:#c8c8c8;">Goes to <a href="https://paypal.me/hmrgoncalves" target="_blank" rel="noopener">paypal.me/hmrgoncalves</a></p>
                 <div class="paypal-row">
                     <a class="cta paypal-go" href="https://www.paypal.com/paypalme/hmrgoncalves/1EUR" target="_blank" rel="noopener">Donate €1</a>
                     <a class="cta paypal-go" href="https://www.paypal.com/paypalme/hmrgoncalves/1USD" target="_blank" rel="noopener">Donate $1</a>
                     <a class="cta paypal-go" href="https://www.paypal.com/paypalme/hmrgoncalves/1GBP" target="_blank" rel="noopener">Donate £1</a>
                     <a class="cta paypal-other" href="https://www.paypal.com/paypalme/hmrgoncalves" target="_blank" rel="noopener">Other amount</a>
                 </div>
-            </div>
+            </article>
         </section>
 
-        <section>
-            <h2>What Happens If We Don’t Make It?</h2>
-            <p>If by August 2, 2027 the total isn’t enough to buy a Taycan (even a used one), the money will go to a charity of my choice. I’ll announce which one well before the deadline so it’s transparent. No disappearing acts. No “the money went to my mortgage.” Just a clear fallback.</p>
-            <div class="note">
-                This is not a scam. I’m not promising anyone a ride, a share of the car, or eternal glory. I’m just a regular guy asking strangers to help turn a silly lifelong dream into something real. If it works, it’s a great story. If it doesn’t, at least a good cause benefits.
-            </div>
+        <section class="panel">
+            <article class="card">
+                <h2>What Happens If We Don’t Make It?</h2>
+                <p>If by August 2, 2027 the total isn’t enough to buy a Taycan (even a used one), the money will go to a charity of my choice. I’ll announce which one well before the deadline so it’s transparent. No disappearing acts. No “the money went to my mortgage.” Just a clear fallback.</p>
+                <div class="note">This is not a scam. I’m not promising anyone a ride, a share of the car, or eternal glory. I’m just a regular guy asking strangers to help turn a silly lifelong dream into something real. If it works, it’s a great story. If it doesn’t, at least a good cause benefits.</div>
+            </article>
         </section>
 
-        <section>
-            <h2>Field Notes</h2>
-            <p>I write about new Porsches the way a man writes about a kitchen he cannot afford. Dramatic. Slightly unhinged. Useful if you landed here from a search.</p>
-            <ul class="post-list">
-                <li><a href="blog/taycan-e-shift.html">The Taycan learned to pretend it has gears<small>18 June 2026</small></a></li>
-                <li><a href="blog/macan-electric.html">The Macan Electric is winning and I am trying to be mature about it<small>9 October 2026</small></a></li>
-                <li><a href="blog/cayenne-electric.html">They made the Cayenne electric and my driveway got nervous<small>24 April 2026</small></a></li>
-                <li><a href="blog/911-manual.html">The manual 911 came back and my left foot filed a complaint<small>13 August 2026</small></a></li>
-                <li><a href="blog/718-electric.html">The petrol 718 is gone. The electric one is still a rumour with headlights<small>5 November 2026</small></a></li>
-                <li><a href="blog/porsche-future.html">Porsche is planning a car above the 911 and I am still planning Tuesday<small>7 October 2026</small></a></li>
-            </ul>
-            <p style="margin-top:1rem;"><a href="blog/index.html">All notes</a></p>
+        <section class="panel right">
+            <article class="card">
+                <h2>Field Notes</h2>
+                <p>I write about new Porsches the way a man writes about a kitchen he cannot afford. Dramatic. Slightly unhinged. Useful if you landed here from a search.</p>
+                <ul class="post-list">
+                    <li><a href="blog/taycan-e-shift.html">The Taycan learned to pretend it has gears<small>18 June 2026</small></a></li>
+                    <li><a href="blog/macan-electric.html">The Macan Electric is winning and I am trying to be mature about it<small>9 October 2026</small></a></li>
+                    <li><a href="blog/cayenne-electric.html">They made the Cayenne electric and my driveway got nervous<small>24 April 2026</small></a></li>
+                    <li><a href="blog/911-manual.html">The manual 911 came back and my left foot filed a complaint<small>13 August 2026</small></a></li>
+                    <li><a href="blog/718-electric.html">The petrol 718 is gone. The electric one is still a rumour with headlights<small>5 November 2026</small></a></li>
+                    <li><a href="blog/porsche-future.html">Porsche is planning a car above the 911 and I am still planning Tuesday<small>7 October 2026</small></a></li>
+                </ul>
+                <p style="margin-top:1rem;"><a href="blog/index.html">All notes</a></p>
+                <p style="margin-top:1rem;"><a class="cta" href="#donate">Send 1 unit of currency</a></p>
+                <p style="margin-top:1rem;font-size:0.85rem;color:#9a9a9a;">Admin / update funds: <a href="admin.html">admin.html</a></p>
+            </article>
         </section>
-
-        <section style="text-align:center;">
-            <a href="#donate" class="cta">Send 1 unit of currency</a>
-            <p style="margin-top:1.5rem;font-size:0.9rem;color:#666;">Admin / update funds: <a href="admin.html">admin.html</a></p>
-        </section>
-    </div>
-
-    <footer>
+    </main>
+    <footer class="fine">
         Made by a Portuguese dad who still believes in childhood dreams.<br>
-        Not affiliated with Porsche AG. Obviously.
+        Studio model, not an official Porsche render. Not affiliated with Porsche AG.
     </footer>
-
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="js/scene.js"></script>
     <script>
         const GOAL = 110000;
-
         function formatMoney(amount, currency) {
             return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount || 0);
         }
-
         function updateDisplay(funds) {
             const eur = Number(funds.eur) || 0;
             document.getElementById("raised").textContent = formatMoney(eur, "EUR");
@@ -247,25 +280,40 @@
             const extras = [];
             if (Number(funds.usd) > 0) extras.push(formatMoney(funds.usd, "USD"));
             if (Number(funds.gbp) > 0) extras.push(formatMoney(funds.gbp, "GBP"));
-            const line = document.getElementById("extras");
-            line.textContent = extras.length
+            document.getElementById("extras").textContent = extras.length
                 ? "Also received " + extras.join(" and ") + ". The bar counts euros only."
                 : "Updated when PayPal confirms a payment.";
         }
-
         async function loadFunds() {
             try {
                 const response = await fetch("funds.json", { cache: "no-store" });
                 if (!response.ok) throw new Error("missing");
                 updateDisplay(await response.json());
-                return;
             } catch (err) {
                 const stored = localStorage.getItem("porschefund_raised");
                 updateDisplay({ eur: stored ? parseFloat(stored) || 0 : 0, usd: 0, gbp: 0 });
             }
         }
-
         loadFunds();
+
+        document.querySelectorAll(".card").forEach((card) => {
+            card.addEventListener("pointermove", (event) => {
+                const rect = card.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width - 0.5;
+                const y = (event.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = "perspective(900px) rotateY(" + (x * 8) + "deg) rotateX(" + (-y * 7) + "deg)";
+            });
+            card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+        });
+        document.querySelectorAll(".cta").forEach((btn) => {
+            btn.addEventListener("pointermove", (event) => {
+                const rect = btn.getBoundingClientRect();
+                const x = event.clientX - (rect.left + rect.width / 2);
+                const y = event.clientY - (rect.top + rect.height / 2);
+                btn.style.transform = "translate(" + (x * 0.2) + "px," + (y * 0.25) + "px)";
+            });
+            btn.addEventListener("pointerleave", () => { btn.style.transform = ""; });
+        });
     </script>
 </body>
 </html>

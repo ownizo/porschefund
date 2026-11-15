@@ -3,18 +3,13 @@
 Humorous crowdfunding page for a regular Portuguese guy trying to buy a Porsche Taycan by his 42nd birthday (August 2, 2027).
 
 ## Files
-- `index.html` — homepage
-- `funds.json` — public totals shown on the homepage, updated by hand
-- `admin.html` — local preview of the counter (changes only the browser you use it in)
+- `index.html` — homepage. Reads the totals from `/api/funds` (falls back to `funds.json`).
+- `admin.html` — backoffice at porschefund.com/admin. Log in and set the totals everyone sees.
+- `netlify/functions/funds.mjs` — `/api/funds`: GET returns the totals; POST saves them (password required). Stored in Netlify Blobs.
+- `funds.json` — fallback totals, only used if the function is unavailable.
 
-## Updating the counter
-The donate buttons are PayPal.me links, which do not notify the site. Update the total by hand:
-
-1. Open `funds.json` on GitHub and click the pencil (Edit).
-2. Change `eur` (and `usd` / `gbp` if any), `count` if you track it, and set `updatedAt` to the current date and time, e.g. `"2026-11-20T18:00:00Z"`.
-3. Commit to `main`. Netlify publishes the new total in about a minute.
-
-`eur` is the number the progress bar uses. `usd` and `gbp` are shown as extra lines.
+## Backoffice password
+Set it in Netlify: Site configuration → Environment variables → add `ADMIN_PASSWORD` (scope: Functions), then redeploy (Deploys → Trigger deploy). To change it later, edit the variable and redeploy.
 
 If the goal is not reached by the deadline, funds go to a charity of the organizer’s choice.
 

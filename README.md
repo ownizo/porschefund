@@ -27,3 +27,8 @@ PayPal.me links do not call this webhook. It runs only for payments made through
 The endpoint checks the PayPal signature before it adds the amount to `funds.json`. It does not store the payer's name or email. The homepage reads `funds.json` and counts euros toward the goal.
 
 If the goal is not reached by the deadline, funds go to a charity of the organizer’s choice.
+
+## 3D Taycan
+- `src/scene.js` — three.js scene source (studio lighting, contact shadows, scroll-driven camera)
+- `js/scene.js` — built bundle loaded by the homepage. Rebuild after editing the source: `npm install && npm run build`
+- `assets/taycan.glb` — 2025 Taycan Turbo GT Weissach Package by Ddiaz Design (Sketchfab, CC BY-NC-SA 4.0), compressed with gltf-transform (meshopt + WebP). This optimised file is shared under the same licence.

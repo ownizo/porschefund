@@ -25,4 +25,4 @@ This is not an official Porsche site and not a commercial shop. Donations go onl
 - Deadline: 2 August 2027.
 - Fallback: if the total is not enough, the money goes to a charity of his choice, announced before the deadline.
 - Payments: PayPal only, paypal.me/hmrgoncalves. There are no bank details on the site.
-- The car shown in 3D on the homepage is a 1975 Porsche 911 Turbo, used because the Taycan model was too heavy to load. The fund itself is still for a Taycan. Model by Lionsharp Studios, CC BY.
+- The car shown in 3D on the homepage is a 2025 Porsche Taycan Turbo GT Weissach Package, rendered with three.js. The camera circles the car as the visitor scrolls. Model by Ddiaz Design, CC BY-NC-SA 4.0.

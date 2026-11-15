@@ -58,7 +58,6 @@
             padding: 12vh 7vw;
         }
         .panel.right { justify-content: flex-end; }
-        .panel.center { justify-content: center; }
         .card {
             width: min(540px, 92vw);
             padding: 1.6rem 1.5rem 1.4rem;
@@ -68,19 +67,10 @@
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            transform-style: preserve-3d;
-            animation: float 7s ease-in-out infinite;
-            transition: transform 0.18s ease, border-color 0.2s ease;
+            transition: border-color 0.2s ease;
         }
         .card:hover { border-color: rgba(201, 162, 39, 0.55); }
-        .hero-copy {
-            width: min(460px, 90vw);
-            animation: float 8s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { translate: 0 0; }
-            50% { translate: 0 -12px; }
-        }
+        .hero-copy { width: min(460px, 90vw); }
         h1 {
             font-size: clamp(2.6rem, 7vw, 5.4rem);
             line-height: 0.92;
@@ -166,19 +156,6 @@
         }
         .post-list a:hover { color: var(--porsche-gold); }
         .post-list small { display: block; color: var(--muted); font-size: 0.78rem; }
-        .hint {
-            position: fixed;
-            left: 50%;
-            bottom: 1.2rem;
-            transform: translateX(-50%);
-            z-index: 2;
-            color: #ddd;
-            font-size: 0.8rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            pointer-events: none;
-            opacity: 0.8;
-        }
         footer.fine {
             position: relative;
             z-index: 1;
@@ -189,10 +166,8 @@
         }
         @media (max-width: 720px) {
             .panel, .panel.right { justify-content: center; min-height: 100vh; padding: 18vh 1rem; }
-            .card { animation: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .card, .hero-copy { animation: none; }
             html { scroll-behavior: auto; }
         }
     </style>
@@ -260,16 +235,15 @@
                 <h2>Field Notes</h2>
                 <p>I write about new Porsches the way a man writes about a kitchen he cannot afford. Dramatic. Slightly unhinged. Useful if you landed here from a search.</p>
                 <ul class="post-list">
-                    <li><a href="blog/taycan-e-shift.html">The Taycan learned to pretend it has gears<small>18 June 2026</small></a></li>
-                    <li><a href="blog/macan-electric.html">The Macan Electric is winning and I am trying to be mature about it<small>9 October 2026</small></a></li>
-                    <li><a href="blog/cayenne-electric.html">They made the Cayenne electric and my driveway got nervous<small>24 April 2026</small></a></li>
-                    <li><a href="blog/911-manual.html">The manual 911 came back and my left foot filed a complaint<small>13 August 2026</small></a></li>
-                    <li><a href="blog/718-electric.html">The petrol 718 is gone. The electric one is still a rumour with headlights<small>5 November 2026</small></a></li>
-                    <li><a href="blog/porsche-future.html">Porsche is planning a car above the 911 and I am still planning Tuesday<small>7 October 2026</small></a></li>
+                    <li><a href="/blog/taycan-e-shift">The Taycan learned to pretend it has gears<small>18 June 2026</small></a></li>
+                    <li><a href="/blog/macan-electric">The Macan Electric is winning and I am trying to be mature about it<small>9 October 2026</small></a></li>
+                    <li><a href="/blog/cayenne-electric">They made the Cayenne electric and my driveway got nervous<small>24 April 2026</small></a></li>
+                    <li><a href="/blog/911-manual">The manual 911 came back and my left foot filed a complaint<small>13 August 2026</small></a></li>
+                    <li><a href="/blog/718-electric">The petrol 718 is gone. The electric one is still a rumour with headlights<small>5 November 2026</small></a></li>
+                    <li><a href="/blog/porsche-future">Porsche is planning a car above the 911 and I am still planning Tuesday<small>7 October 2026</small></a></li>
                 </ul>
-                <p style="margin-top:1rem;"><a href="blog/index.html">All notes</a></p>
+                <p style="margin-top:1rem;"><a href="/blog/">All notes</a></p>
                 <p style="margin-top:1rem;"><a class="cta" href="#donate">Send 1 unit of currency</a></p>
-                <p style="margin-top:1rem;font-size:0.85rem;color:#9a9a9a;">Admin / update funds: <a href="admin.html">admin.html</a></p>
             </article>
         </section>
     </main>
@@ -315,25 +289,6 @@
         loadFunds();
         window.addEventListener("storage", function (event) {
             if (event.key === "porschefund_raised" || event.key === "porschefund_raised_at") loadFunds();
-        });
-
-        document.querySelectorAll(".card").forEach((card) => {
-            card.addEventListener("pointermove", (event) => {
-                const rect = card.getBoundingClientRect();
-                const x = (event.clientX - rect.left) / rect.width - 0.5;
-                const y = (event.clientY - rect.top) / rect.height - 0.5;
-                card.style.transform = "perspective(900px) rotateY(" + (x * 8) + "deg) rotateX(" + (-y * 7) + "deg)";
-            });
-            card.addEventListener("pointerleave", () => { card.style.transform = ""; });
-        });
-        document.querySelectorAll(".cta").forEach((btn) => {
-            btn.addEventListener("pointermove", (event) => {
-                const rect = btn.getBoundingClientRect();
-                const x = event.clientX - (rect.left + rect.width / 2);
-                const y = event.clientY - (rect.top + rect.height / 2);
-                btn.style.transform = "translate(" + (x * 0.2) + "px," + (y * 0.25) + "px)";
-            });
-            btn.addEventListener("pointerleave", () => { btn.style.transform = ""; });
         });
     </script>
 </body>

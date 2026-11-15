@@ -137,7 +137,7 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="bar" style="width: 0%">0%</div>
                 </div>
-                <p style="margin-top:0.5rem;color:#aaa;font-size:0.9rem;">Updated manually by me. Every euro counts.</p>
+                <p id="extras" style="margin-top:0.5rem;color:#aaa;font-size:0.9rem;">Updated when PayPal confirms a payment.</p>
             </div>
             <p>The idea is simple: <strong>€1 / $1 / £1 per person</strong>. If 110,000 kind (or slightly chaotic) humans each send the price of a coffee, we get there. No complicated tiers. No stretch goals that involve buying a yacht. Just the car.</p>
         </section>
@@ -190,19 +190,40 @@
 
     <script>
         const GOAL = 110000;
-        let raised = 0;
 
-        const stored = localStorage.getItem('porschefund_raised');
-        if (stored) raised = parseFloat(stored) || 0;
-
-        function updateDisplay() {
-            document.getElementById('raised').textContent = '€' + raised.toLocaleString('en-EU');
-            const pct = Math.min(100, (raised / GOAL) * 100);
-            const bar = document.getElementById('bar');
-            bar.style.width = pct + '%';
-            bar.textContent = pct.toFixed(1) + '%';
+        function formatMoney(amount, currency) {
+            return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount || 0);
         }
-        updateDisplay();
+
+        function updateDisplay(funds) {
+            const eur = Number(funds.eur) || 0;
+            document.getElementById("raised").textContent = formatMoney(eur, "EUR");
+            const pct = Math.min(100, (eur / GOAL) * 100);
+            const bar = document.getElementById("bar");
+            bar.style.width = pct + "%";
+            bar.textContent = pct.toFixed(1) + "%";
+            const extras = [];
+            if (Number(funds.usd) > 0) extras.push(formatMoney(funds.usd, "USD"));
+            if (Number(funds.gbp) > 0) extras.push(formatMoney(funds.gbp, "GBP"));
+            const line = document.getElementById("extras");
+            line.textContent = extras.length
+                ? "Also received " + extras.join(" and ") + ". The bar counts euros only."
+                : "Updated when PayPal confirms a payment.";
+        }
+
+        async function loadFunds() {
+            try {
+                const response = await fetch("funds.json", { cache: "no-store" });
+                if (!response.ok) throw new Error("missing");
+                updateDisplay(await response.json());
+                return;
+            } catch (err) {
+                const stored = localStorage.getItem("porschefund_raised");
+                updateDisplay({ eur: stored ? parseFloat(stored) || 0 : 0, usd: 0, gbp: 0 });
+            }
+        }
+
+        loadFunds();
     </script>
 </body>
 </html>

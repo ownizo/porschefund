@@ -5,8 +5,8 @@ Humorous crowdfunding page for a regular Portuguese guy trying to buy a Porsche 
 ## Files
 - `index.html` — homepage
 - `funds.json` — public totals, updated by the PayPal webhook
-- `api/paypal-webhook.js` — PayPal webhook endpoint (needs a host such as Vercel, not GitHub Pages)
-- `admin.html` — local preview of the counter
+- `api/paypal-webhook.js` — PayPal webhook endpoint written for Vercel. **Not active:** the site is hosted on Netlify, which does not run this file. Until it is set up, update `funds.json` by hand.
+- `admin.html` — local preview of the counter (changes only the browser you use it in)
 
 ## PayPal webhook
 PayPal.me links do not call this webhook. It runs only for payments made through a PayPal REST app (Checkout or a button on that app).
